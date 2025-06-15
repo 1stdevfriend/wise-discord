@@ -70,6 +70,23 @@ const samples = {
     event_type: "transfers#state-change",
     schema_version: "2.0.0",
     sent_at: "2025-06-15T12:25:01Z"
+  },
+
+  activeCases: {
+    resource: {
+      id: 0,
+      profile_id: 0,
+      account_id: 0,
+      type: "transfer"
+    },
+    active_cases: [
+      "issue_one",
+      "issue_two",
+      "issue_three"
+    ],
+    event_type: "transfers#active-cases",
+    schema_version: "2.0.0",
+    sent_at: "2025-06-15T12:30:01Z"
   }
 };
 

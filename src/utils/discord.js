@@ -67,6 +67,24 @@ const createBalanceCreditEmbed = (data) => {
   };
 };
 
+const createActiveCasesEmbed = (data) => {
+  return {
+    title: '📝 Active Cases for Transfer',
+    color: 0xffa500,
+    fields: [
+      { name: '🆔 Transfer ID', value: data.resource.id.toString(), inline: true },
+      { name: '👤 Profile ID', value: data.resource.profile_id.toString(), inline: true },
+      { name: '🏦 Account ID', value: data.resource.account_id.toString(), inline: true },
+      { name: '📋 Active Cases', value: data.active_cases && data.active_cases.length ? data.active_cases.map((c, i) => `• ${c}`).join('\n') : 'None', inline: false }
+    ],
+    footer: {
+      text: 'Sent from Wise | Active Cases',
+      icon_url: WISE_LOGO_URL
+    },
+    timestamp: new Date().toISOString()
+  };
+};
+
 const createErrorEmbed = (error) => {
   return {
     title: '🚨 Error Occurred',
@@ -88,5 +106,6 @@ module.exports = {
   createTransferStateChangeEmbed,
   createTransferFailureEmbed,
   createBalanceCreditEmbed,
+  createActiveCasesEmbed,
   createErrorEmbed
 }; 

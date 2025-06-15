@@ -8,6 +8,7 @@ const {
   createTransferStateChangeEmbed,
   createTransferFailureEmbed,
   createBalanceCreditEmbed,
+  createActiveCasesEmbed,
   createErrorEmbed
 } = require('./utils/discord');
 
@@ -35,6 +36,9 @@ app.post('/webhook', async (req, res) => {
         break;
       case 'balances#credit':
         embed = createBalanceCreditEmbed(data);
+        break;
+      case 'transfers#active-cases':
+        embed = createActiveCasesEmbed(data);
         break;
       default:
         // For unknown events, send the raw payload
