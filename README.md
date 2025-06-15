@@ -94,4 +94,4 @@ Health check endpoint.
 
 ## License
 
-MIT 
+AGPL-3
