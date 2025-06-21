@@ -85,14 +85,25 @@ const createActiveCasesEmbed = (data) => {
   };
 };
 
-const createErrorEmbed = (error) => {
+const createErrorEmbed = (error, payload = null) => {
+  const fields = [
+    { name: 'Error Message', value: error.message || 'Unknown error', inline: false },
+    { name: 'Timestamp', value: new Date().toLocaleString(), inline: true }
+  ];
+
+  // Add payload if provided
+  if (payload) {
+    fields.push({
+      name: 'Request Payload',
+      value: '```json\n' + JSON.stringify(payload, null, 2) + '\n```',
+      inline: false
+    });
+  }
+
   return {
     title: '🚨 Error Occurred',
     color: 0xff0000,
-    fields: [
-      { name: 'Error Message', value: error.message || 'Unknown error', inline: false },
-      { name: 'Timestamp', value: new Date().toLocaleString(), inline: true }
-    ],
+    fields: fields,
     footer: {
       text: 'Sent from Wise | Error',
       icon_url: WISE_LOGO_URL

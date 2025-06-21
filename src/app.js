@@ -61,7 +61,7 @@ app.post('/webhook', async (req, res) => {
     
     // Send error to Discord error webhook
     try {
-      const errorEmbed = createErrorEmbed(error);
+      const errorEmbed = createErrorEmbed(error, req.body);
       await sendDiscordWebhook(process.env.DISCORD_ERROR_WEBHOOK_URL, errorEmbed);
     } catch (discordError) {
       console.error('Failed to send error to Discord:', discordError);
