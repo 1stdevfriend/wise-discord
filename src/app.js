@@ -9,7 +9,8 @@ const {
   createTransferFailureEmbed,
   createBalanceCreditEmbed,
   createActiveCasesEmbed,
-  createErrorEmbed
+  createErrorEmbed,
+  createTransferIncomingPaymentWaitingEmbed
 } = require('./utils/discord');
 
 const app = express();
@@ -29,7 +30,14 @@ app.post('/webhook', async (req, res) => {
     let embed;
     switch (event_type) {
       case 'transfers#state-change':
-        embed = createTransferStateChangeEmbed(data);
+        if (
+          data.previous_state === null &&
+          data.current_state === 'incoming_payment_waiting'
+        ) {
+          embed = createTransferIncomingPaymentWaitingEmbed(data);
+        } else {
+          embed = createTransferStateChangeEmbed(data);
+        }
         break;
       case 'transfers#payout-failure':
         embed = createTransferFailureEmbed(data);

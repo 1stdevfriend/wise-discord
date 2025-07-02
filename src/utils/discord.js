@@ -112,11 +112,41 @@ const createErrorEmbed = (error, payload = null) => {
   };
 };
 
+// Helper to generate a Wise payment tracking link (publicly accessible for the user)
+const getWisePaymentLink = (transferId) => {
+  // This is a common format for Wise public payment tracking links
+  // (If you have a custom domain or Wise for Business, adjust accordingly)
+  return `https://wise.com/transfer/${transferId}/details`;
+};
+
+// New embed for transfer state change with null previous_state (e.g., incoming_payment_waiting)
+const createTransferIncomingPaymentWaitingEmbed = (data) => {
+  const transferId = data.resource.id;
+  const paymentLink = getWisePaymentLink(transferId);
+  return {
+    title: '⏳ Incoming Payment Waiting',
+    color: 0x3498db,
+    description: 'A transfer is waiting for an incoming payment.',
+    fields: [
+      { name: '🆔 Transfer ID', value: transferId.toString(), inline: true },
+      { name: '👤 Profile ID', value: data.resource.profile_id.toString(), inline: true },
+      { name: '🏦 Account ID', value: data.resource.account_id.toString(), inline: true },
+      { name: '🔄 Current State', value: data.current_state, inline: true },
+      { name: '⏪ Previous State', value: data.previous_state === null ? 'N/A' : data.previous_state, inline: true },
+      { name: '⏰ Occurred At', value: new Date(data.occurred_at).toLocaleString(), inline: true },
+      { name: '🔗 Payment Link', value: `[View on Wise](${paymentLink})`, inline: false }
+    ],
+    footer: getFooter(data.occurred_at),
+    timestamp: new Date().toISOString()
+  };
+};
+
 module.exports = {
   sendDiscordWebhook,
   createTransferStateChangeEmbed,
   createTransferFailureEmbed,
   createBalanceCreditEmbed,
   createActiveCasesEmbed,
-  createErrorEmbed
+  createErrorEmbed,
+  createTransferIncomingPaymentWaitingEmbed
 }; 
